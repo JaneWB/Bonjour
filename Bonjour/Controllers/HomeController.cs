@@ -5,35 +5,36 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Bonjour.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
 
 namespace Bonjour.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+  
+        public IActionResult Index(string firstName, string lastName, string langSelect)
         {
+            ViewBag.FirstName = firstName;
+            ViewBag.LastName = lastName;
+            ViewBag.langSelect = langSelect;
+            ViewBag.messageOut = CreateMessage(firstName, langSelect);
             return View();
+
         }
 
-        public IActionResult About()
+        private static string CreateMessage(string name, string lang)
         {
-            ViewData["Message"] = "Your application description page.";
+            if (name != null && lang != null)
+            {
+                return string.Format("{0} {1}", lang, name);
+            }
 
-            return View();
+            return "nothing";
+
         }
 
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
+        
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
